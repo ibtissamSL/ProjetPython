@@ -11,6 +11,8 @@ import plotly.io as pio
 
 app = Dash(__name__)
 
+print("ghghg")
+
 # assume you have a "long-form" data frame
 # see https://plotly.com/python/px-arguments/ for more options
 
