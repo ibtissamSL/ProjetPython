@@ -9,6 +9,7 @@ app = Dash(__name__)
 url = 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/submissionsClean.csv?raw=true'
 submission = pd.read_csv(url,sep = ",",header=0)
 
+print("Hello world")
 
 fig = px.bar(submission, x="gender", y="income", color="gender", barmode="group")
 
