@@ -72,10 +72,10 @@ app.layout = html.Div(children=[
     html.Div(children='Prédire si l’amour va opérer entre deux personnes'),
     dcc.Graph(
         id='example-graph',
-        figure=fig
+        figure=barchart
     ),
     #html.Div(html.Img(src=app.get_asset_url('https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing'))) #, style={'height':'2%', 'width':'2%'}
-    html.Div(html.Img(src=app.get_asset_url(r'C:/Users/ibtis/OneDrive/Documents/GitHub/ProjetM2Pythion/logo.png'),),), #, style={'height':'2%', 'width':'2%'}
+    html.Div(html.Img(src=app.get_asset_url(r'C:/Users/ibtis/OneDrive/Documents/GitHub/ProjetM2Pythion/logo.jpg'),),), #, style={'height':'2%', 'width':'2%'}
 ])
 
 '''test_png = 'https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing'
