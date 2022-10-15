@@ -9,6 +9,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.io as pio
 import base64
+import dash_bootstrap_components as dbc
 #import pygame
 
 app = Dash(__name__)
@@ -64,7 +65,7 @@ barchart.ylabel('Nombre de participants')'''
     maxdepth=-1
 )'''
 
-
+#fig_img=px.imshow('logo.png').update_layout
 app.layout = html.Div(children=[
     #html.Img(src=app.get_asset_url('https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing')),
     
@@ -75,7 +76,13 @@ app.layout = html.Div(children=[
         figure=barchart
     ),
     #html.Div(html.Img(src=app.get_asset_url('https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing'))) #, style={'height':'2%', 'width':'2%'}
-    html.Div(html.Img(src=app.get_asset_url(r'C:/Users/ibtis/OneDrive/Documents/GitHub/ProjetM2Pythion/logo.jpg'),),), #, style={'height':'2%', 'width':'2%'}
+    html.Div(html.Img(src=app.get_asset_url(r'C:/Users/ibtis/OneDrive/Documents/GitHub/ProjetM2Pythion/logo.jpg'),),),
+    
+    dbc.Row([
+        dbc.Col([
+            dcc.Graph(figure=r'C:/Users/ibtis/OneDrive/Documents/GitHub/ProjetM2Pythion/logo.jpg')
+        ], width=6)
+    ]) #, style={'height':'2%', 'width':'2%'}
 ])
 
 '''test_png = 'https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing'
@@ -89,3 +96,6 @@ test_base64 = base64.b64encode(open(test_png, 'rb').read()).decode('ascii')'''
 
 if __name__ == '__main__':
     app.run_server(debug=True)
+
+    #brouillon 
+    #https://community.plotly.com/t/adding-local-image/4896/5  pour insérer les images
