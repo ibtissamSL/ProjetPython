@@ -74,17 +74,18 @@ app.layout = html.Div(children=[
         id='example-graph',
         figure=fig
     ),
-    html.Div(html.Img(src=app.get_asset_url('https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing'))) #, style={'height':'2%', 'width':'2%'}
+    #html.Div(html.Img(src=app.get_asset_url('https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing'))) #, style={'height':'2%', 'width':'2%'}
+    html.Div(html.Img(src=app.get_asset_url(r'C:/Users/ibtis/OneDrive/Documents/GitHub/ProjetM2Pythion/logo.png'),),), #, style={'height':'2%', 'width':'2%'}
 ])
 
-test_png = 'https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing'
-test_base64 = base64.b64encode(open(test_png, 'rb').read()).decode('ascii')
+'''test_png = 'https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing'
+test_base64 = base64.b64encode(open(test_png, 'rb').read()).decode('ascii')'''
 
 
-app.layout = html.Div([
+'''app.layout = html.Div([
     html.Img(src='data:image/png;base64,{}'.format(test_base64)),
     #html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode()), 
-    ])
+    ])'''
 
 if __name__ == '__main__':
     app.run_server(debug=True)
