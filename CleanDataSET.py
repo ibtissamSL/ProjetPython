@@ -9,7 +9,7 @@ Created on Fri Oct 14 15:07:00 2022
 
 #importation des modules
 from sklearn.impute import KNNImputer
-import pandas,numpy as np
+import pandas, numpy as np
 
 #chargement des données
 url = 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/train.csv?raw=true'

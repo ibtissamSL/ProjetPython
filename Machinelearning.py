@@ -63,6 +63,7 @@ print(metrics.classification_report(ytest, y_pred))
 #performance du modele
 print(f1_score(ytest, y_pred, average='macro'))
 
+
 #prediction avec submission
 y_pred2 = clf.predict(XSub)
 y_pred2 = pandas.DataFrame(y_pred2)
@@ -77,4 +78,4 @@ sub.columns = ["iid_pid","target"]
 sub
 
 #exportation des fichiers 
-sub.to_csv('prediction.csv',header = True, index=False)
+sub.to_csv('C:/Users/samib/Documents/Env/venv/prediction.csv',header = True, index=False)

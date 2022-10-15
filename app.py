@@ -3,6 +3,7 @@
 # Run this app with `python app.py` and
 # visit http://127.0.0.1:8050/ in your web browser.
 
+
 from dash import Dash, html, dcc
 import plotly.express as px
 import pandas as pd
@@ -22,10 +23,12 @@ app = Dash(__name__)
 
 #df = pd.read_csv("C:/Users/ibtis/Downloads/train.csv")
 
+url2 = 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/submissionsClean.csv?raw=true'
+df = pd.read_csv(url2,sep = ",",header=0)
 
-df = pd.read_csv(r"C:/Users/ibtis/OneDrive/Bureau/me/BettyM2_SISE/projet Python/env1/files/train.csv", sep=";")
+print(df)
 
-fig = px.bar(df, x="wave", y="iid_pid", color="gender", barmode="group")
+fig = px.bar(df, x="sports", y="iid_pid", color="gender", barmode="group")
 
 #fig2 = plt.pie(df["gender"].value_counts(),labels=round(df["gender"].value_counts(normalize=True)*100,2))
 fig2 = px.pie(df, values='gender', names='gender')
