@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import plotly.io as pio
 import base64
 import dash_bootstrap_components as dbc
+import plotly.graph_objects as go
 #import pygame
 
 app = Dash(__name__)
@@ -22,6 +23,10 @@ app = Dash(__name__)
 
 
 #df = pd.read_csv("C:/Users/ibtis/Downloads/train.csv")
+
+
+
+
 
 
 df = pd.read_csv(r"C:/Users/ibtis/OneDrive/Bureau/me/BettyM2_SISE/projet Python/env1/files/train.csv", sep=";")
@@ -51,19 +56,7 @@ barchart = px.bar(
     color_discrete_map={1:"yellow", 0:"blue"}
     #...
 )
-'''barchart.title('Nombre de personnes par vague')
-barchart.xlabel('N° de la vague')
-barchart.ylabel('Nombre de participants')'''
-#pio.show(barchart)
 
-#sunburst
-'''fig3 = px.sunburst(
-    data_frame = df,
-    path =['from','field','race'],
-    color = 'from',
-    color_discrete_sequence=px.colors.qualitative.Pastel,
-    maxdepth=-1
-)'''
 
 #fig_img=px.imshow('logo.png').update_layout
 app.layout = html.Div(children=[
@@ -75,24 +68,82 @@ app.layout = html.Div(children=[
         id='example-graph',
         figure=barchart
     ),
-    #html.Div(html.Img(src=app.get_asset_url('https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing'))) #, style={'height':'2%', 'width':'2%'}
-    html.Div(html.Img(src=app.get_asset_url(r'C:/Users/ibtis/OneDrive/Documents/GitHub/ProjetM2Pythion/logo.jpg'),),),
-    
-    dbc.Row([
-        dbc.Col([
-            dcc.Graph(figure=r'C:/Users/ibtis/OneDrive/Documents/GitHub/ProjetM2Pythion/logo.jpg')
-        ], width=6)
-    ]) #, style={'height':'2%', 'width':'2%'}
+
 ])
 
-'''test_png = 'https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing'
-test_base64 = base64.b64encode(open(test_png, 'rb').read()).decode('ascii')'''
+fig.add_layout_image(
+    dict(
+        source="https://raw.githubusercontent.com/Samibgh/ProjetM2Pythion/main/logo.png",
+        xref="paper", yref="paper",
+        x=1, y=1.05,
+        sizex=0.2, sizey=0.2,
+        xanchor="right", yanchor="bottom"
+    )
+)
+
+##################image
+# Create figure
+fig_im = go.Figure()
+
+# Constants
+img_width = 1600
+img_height = 900
+scale_factor = 0.5
+
+# Add invisible scatter trace.
+# This trace is added to help the autoresize logic work.
+fig_im.add_trace(
+    go.Scatter(
+        x=[0, img_width * scale_factor],
+        y=[0, img_height * scale_factor],
+        mode="markers",
+        marker_opacity=0
+    )
+)
+
+# Configure axes
+fig_im.update_xaxes(
+    visible=False,
+    range=[0, img_width * scale_factor]
+)
+
+fig_im.update_yaxes(
+    visible=False,
+    range=[0, img_height * scale_factor],
+    # the scaleanchor attribute ensures that the aspect ratio stays constant
+    scaleanchor="x"
+)
+
+# Add image
+fig_im.add_layout_image(
+    dict(
+        x=0,
+        sizex=img_width * scale_factor,
+        y=img_height * scale_factor,
+        sizey=img_height * scale_factor,
+        xref="x",
+        yref="y",
+        opacity=1.0,
+        layer="below",
+        sizing="stretch",
+        #source="https://raw.githubusercontent.com/michaelbabyn/plot_data/master/bridge.jpg")
+        source="https://raw.githubusercontent.com/Samibgh/ProjetM2Pythion/main/logo.png")
+)
+
+# Configure other layout
+fig_im.update_layout(
+    width=img_width * scale_factor,
+    height=img_height * scale_factor,
+    margin={"l": 0, "r": 0, "t": 0, "b": 0},
+)
+
+# Disable the autosize on double click because it adds unwanted margins around the image
+# More detail: https://plotly.com/python/configuration-options/
+fig_im.show(config={'doubleClick': 'reset'})
+
+####################image
 
 
-'''app.layout = html.Div([
-    html.Img(src='data:image/png;base64,{}'.format(test_base64)),
-    #html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode()), 
-    ])'''
 
 if __name__ == '__main__':
     app.run_server(debug=True)
