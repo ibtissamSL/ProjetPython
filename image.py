@@ -1,78 +1,155 @@
+from ctypes import alignment
 import plotly.graph_objects as go
+from dash import Dash
+from dash import Dash, html, dcc
+import plotly.express as px
+import pandas as pd
 
-fig = go.Figure()
+df = pd.read_csv(r"C:/Users/ibtis/OneDrive/Bureau/me/BettyM2_SISE/projet Python/env1/files/train.csv", sep=";")
+df_ = df.drop_duplicates("iid").groupby(["wave"]).agg( {'iid' : 'count'}).sort_values(by ="iid", ascending =False)
+df_.insert(0,'wave',df_.index.tolist())
+df_=df_[['wave','iid']]
 
-'''fig.add_trace(
-    go.Bar(
-        x=["-35.3", "-15.9", "-15.8", "-15.6", "-11.1",
-           "-9.6", "-9.2", "-3.5", "-1.9", "-0.9",
-           "1.0", "1.4", "1.7", "2.0", "2.8", "6.2",
-           "8.1", "8.5", "8.5", "8.6", "11.4", "12.5",
-           "13.3", "13.7", "14.4", "17.5", "17.7",
-           "18.9", "25.1", "28.9", "41.4"],
-        y=["Designers, musicians, artists, etc.",
-           "Secretaries and administrative assistants",
-           "Waiters and servers", "Archivists, curators, and librarians",
-           "Sales and related", "Childcare workers, home car workers, etc.",
-           "Food preparation occupations", "Janitors, maids, etc.",
-           "Healthcare technicians, assistants. and aides",
-           "Counselors, social and religious workers",
-           "Physical, life and social scientists", "Construction",
-           "Factory assembly workers", "Machinists, repairmen, etc.",
-           "Media and communications workers", "Teachers",
-           "Mechanics, repairmen, etc.", "Financial analysts and advisers",
-           "Farming, fishing and forestry workers",
-           "Truck drivers, heavy equipment operator, etc.", "Accountants and auditors",
-           "Human resources, management analysts, etc.", "Managers",
-           "Lawyers and judges", "Engineers, architects and surveyors",
-           "Nurses", "Legal support workers",
-           "Computer programmers and system admin.", "Police officers and firefighters",
-           "Chief executives", "Doctors, dentists and surgeons"],
-        marker=go.bar.Marker(
-            color="rgb(253, 240, 54)",
-            line=dict(color="rgb(0, 0, 0)",
-                      width=2)
-        ),
-        orientation="h",
-    )
-)'''
+app = Dash(__name__)
 
-'''# Add image
-fig.add_layout_image(
+#fig_logo2
+fig_logo2 = go.Figure()
+fig_logo2.add_layout_image(
     dict(
-        source="https://raw.githubusercontent.com/cldougl/plot_images/add_r_img/vox.png",
-        xref="paper", yref="paper",
-        x=1, y=1.05,
-        sizex=0.2, sizey=0.2,
+        source="https://raw.githubusercontent.com/Samibgh/ProjetM2Pythion/main/logo2.png",
+       xref="paper", yref="paper",
+       x=1, y=1.05,
+       sizex=0.2, sizey=0.2,
         xanchor="right", yanchor="bottom"
     )
+)
+
+# Create figure
+fig_im = go.Figure()
+
+# Constants
+img_width = 1600
+img_height = 900
+scale_factor = 0.5
+
+'''# Add invisible scatter trace.
+# This trace is added to help the autoresize logic work.
+fig_im.add_trace(
+    go.Scatter(
+        x=[0, img_width * scale_factor],
+        y=[0, img_height * scale_factor],
+        mode="markers",
+        marker_opacity=0
+    )
 )'''
+
+# Configure axes
+fig_im.update_xaxes(
+    visible=False,
+    range=[0, img_width * scale_factor]
+)
+
+fig_im.update_yaxes(
+    visible=False,
+    range=[0, img_height * scale_factor],
+    # the scaleanchor attribute ensures that the aspect ratio stays constant
+    scaleanchor="x"
+)
 
 # Add image
-fig.add_layout_image(
+fig_im.add_layout_image(
     dict(
-        source="https://raw.githubusercontent.com/cldougl/plot_images/add_r_img/vox.png",
-       #xref="paper", yref="paper",
-        #x=1, y=1.05,
-        #sizex=0.2, sizey=0.2,
-        xanchor="right", yanchor="bottom"
-    )
+        x=0,
+        sizex=img_width * scale_factor,
+        y=img_height * scale_factor,
+        sizey=img_height * scale_factor,
+        xref="x",
+        yref="y",
+        opacity=1.0,
+        layer="below",
+        sizing="stretch",
+        #source="https://raw.githubusercontent.com/michaelbabyn/plot_data/master/bridge.jpg")
+        source="https://raw.githubusercontent.com/Samibgh/ProjetM2Pythion/main/logo.png"),
+        #xanchor = "center", #Sets the anchor for the x position. "left" | "center" | "right"
+        #yanchor = "middle", #Sets the anchor for the y position. "top" | "middle" | "bottom"
+        
+)
+
+# Configure other layout
+fig_im.update_layout(
+    width=img_width * scale_factor,
+    height=img_height * scale_factor,
+    margin={"l": 0, "r": 0, "t": 0, "b": 0},
+    #align="center"
+    
 )
 
 
-
-# update layout properties
-fig.update_layout(
-    autosize=False,
-    height=800,
-    width=700,
-    bargap=0.15,
-    bargroupgap=0.1,
-    barmode="stack",
-    hovermode="x",
-    margin=dict(r=20, l=300, b=75, t=125),
-    title=("Moving Up, Moving Down<br>" +
-           "<i>Percentile change in income between childhood and adulthood</i>"),
+barchart = px.bar(
+    data_frame=df_,
+    x='wave',
+    y='iid',
+    #color="gender",
+    opacity=0.9,
+    orientation="v",
+    barmode="overlay",
+    title="Nombre de personnes par vague",
+    labels='N° de la vague',
+    color_discrete_map={1:"yellow", 0:"blue"}
+    #...
 )
 
-fig.show()
+app.layout = html.Div([
+
+    html.Div(children=[
+    #html.Img(src=app.get_asset_url('https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing')),
+    
+    html.H1(children='EasyDate - AI match',style={'textAlign': 'center', 'color': '#FFC0CB'}),
+    html.H2(children='Prédire si l’amour va opérer entre deux personnes',style={'textAlign': 'center', 'color': '#8B008B'}),
+    ]),
+
+html.Div(children=[
+    #html.Img(src=app.get_asset_url('https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing')),
+    
+    #html.H1(children='EasyDate - AI match',style={'textAlign': 'center', 'color': '#7FDBFF'}),
+    #html.Div(children='Prédire si l’amour va opérer entre deux personnes'),
+
+    dcc.Graph(
+        id='graph_fig_im',
+        figure=fig_im,style={'textAlign': 'center'}
+    ),]),
+
+
+#fig_im
+
+html.Div(children=[
+    #html.Img(src=app.get_asset_url('https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing')),
+    
+    #html.H1(children='EasyDate - AI match',style={'textAlign': 'center', 'color': '#7FDBFF'}),
+    #html.H4(children='Prédire si l’amour va opérer entre deux personnes',style={'textAlign': 'center', 'color': '#7FDBFF'}),
+    dcc.Graph(
+        id='graph_fig_logo2',
+        figure=fig_logo2,
+    ),]),
+
+
+
+
+
+html.Div(children=[
+    #html.Img(src=app.get_asset_url('https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing')),
+    
+    #html.H1(children='EasyDate - AI match',style={'textAlign': 'center', 'color': '#7FDBFF'}),
+    #html.Div(children='Prédire si l’amour va opérer entre deux personnes'),
+
+    dcc.Graph(
+        id='graph_barchart',
+        figure=barchart,
+    ),]),
+
+])
+
+
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
