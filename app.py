@@ -58,7 +58,19 @@ barchart = px.bar(
 )
 
 
-#fig_img=px.imshow('logo.png').update_layout
+fig_logo2 = go.Figure()
+# Add image
+fig_logo2.add_layout_image(
+    dict(
+        source="https://raw.githubusercontent.com/Samibgh/ProjetM2Pythion/main/logo2.png",
+       xref="paper", yref="paper",
+       x=1, y=1.05,
+       sizex=0.2, sizey=0.2,
+        xanchor="right", yanchor="bottom"
+    )
+)
+
+'''#fig_img=px.imshow('logo.png').update_layout
 app.layout = html.Div(children=[
     #html.Img(src=app.get_asset_url('https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing')),
     
@@ -66,10 +78,17 @@ app.layout = html.Div(children=[
     html.Div(children='Prédire si l’amour va opérer entre deux personnes'),
     dcc.Graph(
         id='example-graph',
-        figure=barchart
+        figure=barchart,
+    ),
+        dcc.Graph(
+        id='example-graph',
+        figure=fig_logo2,
     ),
 
-])
+])'''
+
+
+
 
 fig.add_layout_image(
     dict(
@@ -139,10 +158,48 @@ fig_im.update_layout(
 
 # Disable the autosize on double click because it adds unwanted margins around the image
 # More detail: https://plotly.com/python/configuration-options/
-fig_im.show(config={'doubleClick': 'reset'})
+#fig_im.show(config={'doubleClick': 'reset'})
 
 ####################image
 
+
+app.layout = html.Div(
+
+    html.Div(children=[
+    #html.Img(src=app.get_asset_url('https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing')),
+    
+    html.H1(children='EasyDate - AI match',style={'textAlign': 'center', 'color': '#7FDBFF'}),
+    html.Div(children='Prédire si l’amour va opérer entre deux personnes'),
+    dcc.Graph(
+        id='example-graph',
+        figure=fig_logo2,
+    ),]),
+
+
+html.Div(children=[
+    #html.Img(src=app.get_asset_url('https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing')),
+    
+    html.H1(children='EasyDate - AI match',style={'textAlign': 'center', 'color': '#7FDBFF'}),
+    html.Div(children='Prédire si l’amour va opérer entre deux personnes'),
+
+    dcc.Graph(
+        id='example-graph',
+        figure=fig_im,
+    ),]),
+
+
+html.Div(children=[
+    #html.Img(src=app.get_asset_url('https://drive.google.com/file/d/1bYdHUNetNhSvCfCRCqhfzBHCKgrVUIpG/view?usp=sharing')),
+    
+    html.H1(children='EasyDate - AI match',style={'textAlign': 'center', 'color': '#7FDBFF'}),
+    html.Div(children='Prédire si l’amour va opérer entre deux personnes'),
+
+    dcc.Graph(
+        id='example-graph',
+        figure=barchart,
+    ),]),
+
+)
 
 
 if __name__ == '__main__':
