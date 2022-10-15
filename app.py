@@ -83,6 +83,7 @@ test_base64 = base64.b64encode(open(test_png, 'rb').read()).decode('ascii')
 
 app.layout = html.Div([
     html.Img(src='data:image/png;base64,{}'.format(test_base64)),
+    #html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode()), 
     ])
 
 if __name__ == '__main__':
