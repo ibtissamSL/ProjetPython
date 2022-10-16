@@ -71,8 +71,9 @@ barchart.xlabel('N° de la vague')
 barchart.ylabel('Nombre de participants')'''
 #pio.show(barchart)
 
-#sunburst
-'''fig3 = px.sunburst(
+
+'''#sunburst
+fig3 = px.sunburst(
     data_frame = df,
     path =['from','field','race'],
     color = 'from',
