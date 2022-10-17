@@ -1,8 +1,17 @@
 
+#for the multiple pages app...
+import dash
 
-# Run this app with `python app.py` and
-# visit http://127.0.0.1:8050/ in your web browser.
+# meta_tags are required for the app layout to be mobile responsive
+app = dash.Dash(__name__, suppress_callback_exceptions=True,
+                meta_tags=[{'name': 'viewport',
+                            'content': 'width=device-width, initial-scale=1.0'}]
+                )
+server = app.server
 
+
+
+"<<<<<<< HEAD"
 
 from dash import Dash, html, dcc
 import plotly.express as px
@@ -90,3 +99,5 @@ app.layout = html.Div([
 
 if __name__ == '__main__':
     app.run_server(debug=True)
+
+">>>>>>>ec1f054c67418d684943ba0055b2b633c00603ca"
