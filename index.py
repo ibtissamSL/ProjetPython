@@ -193,6 +193,8 @@ fig_logo2.add_layout_image(
     )
 )
 
+
+
 ##############################      fig_logo2    end    ######################################
 
 app.layout = html.Div(style={'backgroundColor': '#F8F8FF' },children=[
