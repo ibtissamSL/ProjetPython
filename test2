@@ -16,8 +16,20 @@ from dash import Input, Output, dcc, html
 import pandas as pd
 import plotly.graph_objs as go
 import dash_table
+import io
+import base64
+import datetime
+
+
 
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+
+
+
+
+
+
 
 urlSub= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/submissionsClean.csv?raw=true'
 df = pd.read_csv(urlSub,sep = ",",header=0)
@@ -59,6 +71,23 @@ content = dbc.Container(
         html.P("Bonjour !"),html.Br(),
         html.P("Bienvenu sur le Dashboard du Speed Dating. Cette application continent une partie reporting et une partie modélisation et prédiction"),
         html.P("Dans la partie reporting, vous trouverez les graphiques et indicateurs les plus pertinants. Dans la partie prediction, vous trouverez un moyen de prédire les résultats des matchs."),
+
+        dcc.Upload(
+        id='upload-data',
+        children=html.Div([
+            'Drag and Drop or ',
+            html.A('Select Files')
+        ]),
+        style={
+            'width': '100%',
+            'height': '60px',
+            'lineHeight': '60px',
+            'borderWidth': '1px',
+            'borderStyle': 'dashed',
+            'borderRadius': '5px',
+            'textAlign': 'center',
+            'margin': '10px'
+        })
     ],
         id= "active_accueil"
     ),
@@ -78,8 +107,7 @@ content = dbc.Container(
     id="active_dashboard"
     ),
     html.Div([
-        html.Br(),
-        dcc.Upload(id='upload-data',children=html.Div(['Drag and Drop or ',html.A('Select Files')])),
+
         html.Br(),
         html.H4("Répartition des matchs prédis : "),
         dbc.Table.from_dataframe(CountMatch, striped=True, bordered=True, hover=True),
@@ -91,6 +119,24 @@ content = dbc.Container(
     )
     ]
  )
+
+def parse_contents(contents, filename, date):
+    content_type, content_string = contents.split(',')
+
+    decoded = base64.b64decode(content_string)
+    try:
+        if 'csv' in filename:
+            # Assume that the user uploaded a CSV file
+            df = pd.read_csv(
+                io.StringIO(decoded.decode('utf-8')))
+        elif 'xls' in filename:
+            # Assume that the user uploaded an excel file
+            df = pd.read_excel(io.BytesIO(decoded))
+    except Exception as e:
+        print(e)
+        return html.Div([
+            'There was an error processing this file.'
+        ])
 
 
 
