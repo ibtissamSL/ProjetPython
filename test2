@@ -1,0 +1,128 @@
+"""
+This app creates a simple sidebar layout using inline style arguments and the
+dbc.Nav component.
+
+dcc.Location is used to track the current location, and a callback uses the
+current location to render the appropriate page content. The active prop of
+each NavLink is set automatically according to the current pathname. To use
+this feature you must install dash-bootstrap-components >= 0.11.0.
+
+For more details on building multi-page Dash applications, check out the Dash
+documentation: https://dash.plot.ly/urls
+"""
+import dash
+import dash_bootstrap_components as dbc
+from dash import Input, Output, dcc, html
+import pandas as pd
+import plotly.graph_objs as go
+import dash_table
+import io
+import base64
+
+
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+urlSub= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/submissionsClean.csv?raw=true'
+df = pd.read_csv("C:/Users/samib/Documents/GitHub/ProjetM2Pythion/submissionsClean.csv",sep = ",",header=0)
+df["iid_pid"] = df["iid_pid"].astype(int)
+
+urlPred= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/prediction.csv?raw=true'
+pred = pd.read_csv("C:/Users/samib/Documents/GitHub/ProjetM2Pythion/prediction.csv",sep = ",",header=0)
+
+df = pred.merge(df, on="iid_pid", how = 'left')
+
+tab = html.Div(
+    [
+        html.H2("Speed Dating", style = {"font-size" : 50, "text-align": "center"}),
+        html.Hr(),
+        dbc.Tabs(
+            [
+                dbc.Tab(label = "Acceuil", tab_id="Acceuil"),
+                dbc.Tab(label = "DashBoard", tab_id="DashBoard"),
+                dbc.Tab(label = "prediction", tab_id="prediction"),
+            ],
+            id = "onglet", active_tab="Acceuil"
+        ),
+    ], style = {"color": "white","background-color" : "Teal","font-size" : 20}
+)
+
+scatter = go.Figure(
+        data=[go.Scatter(x=df.income, y=df.sports, mode="markers")]
+        )
+
+CountMatch = pd.DataFrame(pred["target"].value_counts())
+CountMatch = CountMatch.reset_index()
+CountMatch.columns = ["Match","target"]
+
+
+content = dbc.Container( 
+
+    [html.Div([
+  
+        html.P("Bonjour !"),html.Br(),
+        html.P("Bienvenu sur le Dashboard du Speed Dating. Cette application continent une partie reporting et une partie modélisation et prédiction"),
+        html.P("Dans la partie reporting, vous trouverez les graphiques et indicateurs les plus pertinants. Dans la partie prediction, vous trouverez un moyen de prédire les résultats des matchs."),
+    ],
+        id= "active_accueil"
+    ),
+    html.Div([
+
+        html.Div([
+            html.H3('Column 1'),
+            dcc.Graph(figure = scatter)
+            
+        ], style= {"width" : 450, "display" : "inline-block" , "margin"  : 5}),
+
+        html.Div([
+            html.H3('Column 2'),
+            dcc.Graph(figure = scatter)
+        ],  style= {"width" : 450, "display" : "inline-block" , "margin"  : 5})
+    ],
+    id="active_dashboard"
+    ),
+    html.Div([
+        html.Br(),
+        html.Br(),
+        html.H4("Répartition des matchs prédis : "),
+        dbc.Table.from_dataframe(CountMatch, striped=True, bordered=True, hover=True),
+        html.Br(),
+        html.H4("Tableau avec tout les individus : "),
+        dbc.Table.from_dataframe(pred, striped=True, bordered=True, hover=True)
+    ],
+    id="active_pred"
+    )
+    ]
+ )
+
+app.layout = html.Div([tab, content])
+
+
+@app.callback([Output("active_accueil", "style"),Output("active_dashboard", "style"), Output("active_pred", "style")],
+                                                                [Input("onglet","active_tab")])
+
+def render_tab_content(active_tab):
+
+    on = {"display":"block"}
+
+    off = {"display":"none"}
+
+    if active_tab is not None:
+
+        if active_tab == "Acceuil":
+
+            return on, off, off
+
+        elif active_tab == "DashBoard":
+
+            return off, on, off
+
+        elif active_tab == "prediction":
+
+            return off, off,on
+
+    return "No tab selected"
+
+
+
+if __name__ == "__main__":
+    app.run_server(debug = True)
