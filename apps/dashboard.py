@@ -1,6 +1,6 @@
 #pour présenter tous les graphiques
 
-print("dashboard")
+#print("dashboard")
 
 import dash_core_components as dcc
 import dash_html_components as html
