@@ -211,7 +211,7 @@ html.Div(children=[
     #html.Div(children='Prédire si l’amour va opérer entre deux personnes'),
     
     html.H1(children='EasyDate - AI match',style={'textAlign': 'center', 'color': '#FFC0CB'}),
-    html.H2(children='Prédire si l’amour va opérer entre deux personnes',style={'textAlign': 'center', 'color': '#8B008B'}),
+    html.H2(children='Prédire si l’amour va opérer entre deux personnes',style={'textAlign': 'center', 'color': '#8B008B','font-family':'Lucida Handwriting'}),
     #dcc.Graph(
      #   id='graph_fig_im',
       #  figure=fig_im,
