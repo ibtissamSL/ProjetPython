@@ -171,6 +171,7 @@ fig_im.update_layout(
     width=img_width * scale_factor,
     height=img_height * scale_factor,
     margin={"l": 0, "r": 0, "t": 0, "b": 0},
+  #style={ 'backgroundColor': '#F8F8FF' }
     #align="center"
     
 )
@@ -233,7 +234,7 @@ html.Div([
 html.Div(children=[
 dcc.Graph(
     id='graph_fig_im',
-    figure=fig_im#style={'textAlign': 'center'}#'width':'75%', 'margin':25, 
+    figure=fig_im,style={'textAlign': 'center'}#'width':'75%', 'margin':25, , 'backgroundColor': '#F8F8FF' 
     #"width": "100%", "display": "flex", 
 ),],style = {'margin-left' : '350px'}),
                         
