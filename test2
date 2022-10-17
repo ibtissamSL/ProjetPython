@@ -19,15 +19,11 @@ import dash_table
 import io
 import base64
 import datetime
-
+import CleanDataSET as Clean
+import Machinelearning as Modele
 
 
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
-
-
-
-
-
 
 
 
