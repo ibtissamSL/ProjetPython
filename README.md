@@ -15,7 +15,7 @@ Le projet a été réalisé grâce à des statistiques descriptives ainsi que du
 * Outils utilisés :
   - Kaggle
   - Google Colab
-  - Librairies Python : Pandas, Numpy, Matplotlib, Seaborn, Statsmodels, Scipy et Sklearn, Dash ....
+  - Librairies Python : Pandas, Numpy, Matplotlib, Seaborn, Statsmodels, Scipy, Sklearn, Dash, dash_bootstrap_components, wordcloud, 
   - Visual Studio Code
 
 Le projet intitulé "Speed Dating" est une application composé d'un script principal. Les résultats ont été présentés lors d'une soutenance évaluée par notre professeur.
