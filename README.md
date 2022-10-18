@@ -26,6 +26,8 @@ Nous avons utilisé heroku pour le déploiement et l'hébergement de notre appli
 
 # Organisation du repository 
 
+#### *Dans le répertoire Datasets* 
+
 fichiers python pour description dataset (sub et train) 
 fichier python pour machine learning 
 fichier python app.py ( application dash)
