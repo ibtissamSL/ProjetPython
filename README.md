@@ -16,3 +16,12 @@ Le projet a été réalisé grâce à des statistiques descriptives ainsi que du
 Le projet intitulé "Speed Dating" est composé d'un script contenant le code de l'analyse complète. Les résultats ont été présentés lors d'une soutenance évaluée par un examinateur.
 ***
 # Organisation du repository 
+
+Code
+Ce fichier contient le notebook Jupyter permettant d'effectuer l'analyse complète du jeu de données et la régression linéaire.
+
+Graphiques
+Ce dossier contient tous les graphiques générés lors de l'analyse des données.
+
+Soutenance
+Ce fichier a été présenté lors de la soutenance validant le projet.
