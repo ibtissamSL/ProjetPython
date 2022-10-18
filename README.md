@@ -32,6 +32,5 @@ Nous avons utilisé heroku pour le déploiement et l'hébergement de notre appli
 
 #### *Dans les fichiers restants :* 
 
-fichiers python pour description dataset (sub et train) 
-fichier python pour machine learning 
-fichier python app.py ( application dash)
+* Machinelearning.py (fichier correspondant aux différents modèles de prédiction)
+* app.py (fichier correspondant au script de notre application Dash)
