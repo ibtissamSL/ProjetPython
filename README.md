@@ -14,5 +14,5 @@ Le projet a été réalisé grâce à des statistiques descriptives ainsi que du
   - Visual Studio Code
 
 Le projet intitulé "Speed Dating" est composé d'un script contenant le code de l'analyse complète. Les résultats ont été présentés lors d'une soutenance évaluée par un examinateur.
-
+***
 # Organisation du repository 
