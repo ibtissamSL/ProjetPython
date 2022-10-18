@@ -1,4 +1,4 @@
-###### Ce projet a été réalisé dans le cadre de la formation Master 2 Statistiques et informatique pour la science des données dans le cadre du cours de programmation python.
+###### Ce projet a été réalisé dans le cadre de la formation Master 2 Statistiques et informatique pour la science des données dans le cadre du cours de programmation python afin d'étudier et d'approfondir nos connaissances et compétences en terme d'exploration du dataset grâce à la librairie pandas mais aussi sklearn et matplotlib pour l'élaboration et la visualisation de nos données.
 
 # Projet Speed Dating
 
