@@ -27,8 +27,8 @@ Nous avons utilisé heroku pour le déploiement et l'hébergement de notre appli
 # Organisation du repository 
 
 #### *Dans le répertoire Datasets :* 
-* Train.csv 
-* Submissions.csv
+* Train.csv (fichier train d'origine)
+* Submissions.csv (fichier submissions d'origine)
 * Dataclean.csv (fichier train nettoyé)
 * submissionsClean (fichier submissions nettoyé)
 * Prediction.csv (fichier correspondant à notre prédiction des matchs selon notre modèle prédictif)
