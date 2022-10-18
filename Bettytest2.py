@@ -17,25 +17,24 @@ import dash_bootstrap_components as dbc
 from dash import Input, Output, dcc, html, State
 import pandas as pd
 import plotly.graph_objs as go
-import dash_table
 import io
 import base64
 import plotly.express as px
 import matplotlib.pyplot as plt
-
+from Activite import ActSub,ActTrain,Nuagemot , FreqDate, FreqSortie,carSub,carTrain
 
 app = dash.Dash(external_stylesheets=[dbc.themes.MATERIA])
 server = app.server
 
 #urlSub= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/submissionsClean.csv?raw=true'
-df = pd.read_csv(r"C:/Users/sibghi/Documents/GitHub/ProjetM2Pythion/submissionsClean.csv",sep = ",",header=0)
+df = pd.read_csv(r"C:/Users/samib/Documents/GitHub/ProjetM2Pythion/submissionsClean.csv",sep = ",",header=0)
 df["iid_pid"] = df["iid_pid"].astype(int)
 
 #urlSub= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/DataClean.csv?raw=true'
-Train = pd.read_csv(r"C:/Users/sibghi/Documents/GitHub/ProjetM2Pythion/DataClean.csv",sep = ",",header=0)
+Train = pd.read_csv(r"C:/Users/samib/Documents/GitHub/ProjetM2Pythion/DataClean.csv",sep = ",",header=0)
 
 #urlPred= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/prediction.csv?raw=true'
-pred = pd.read_csv(r"C:/Users/sibghi/Documents/GitHub/ProjetM2Pythion/prediction.csv",sep = ",",header=0)
+pred = pd.read_csv(r"C:/Users/samib/Documents/GitHub/ProjetM2Pythion/prediction.csv",sep = ",",header=0)
 
 df = pred.merge(df, on="iid_pid", how = 'left')
 
@@ -203,8 +202,14 @@ fig_logo2_2.update_layout(
 
 ##############################      fig_logo2_2    end     ####################################################
 
-
-
+#Appel des fonctions
+ActS = ActSub(df)
+ActT = ActTrain(Train)
+Nuagemot(ActT,ActS, 'tab20b','tab20b' )
+FreqSortie(df)
+FreqDate(df)
+carTrain(Train)
+carSub(df)
 
 tab = html.Div(
     [
@@ -221,15 +226,10 @@ tab = html.Div(
     ], style = {"color": "black"}
 )
 
-d= pd.crosstab(df.go_out,df.target)
-scatter = go.Figure(
-        data=[go.Scatter(d, mode="markers")]
-        )
 
 CountMatch = pd.DataFrame(pred["target"].value_counts())
 CountMatch = CountMatch.reset_index()
 CountMatch.columns = ["Match","target"]
-
 
 content = dbc.Container( 
 
@@ -281,30 +281,22 @@ content = dbc.Container(
 
         #RadioItems pour sélection des données à afficher
         html.Div(children=[
-        dcc.RadioItems(options=['career_c','age','gender','race','field'],id='my-radio-btn',value='career_c'),],style = {'margin-top' : '35px','margin-left' : '35px'}),
-
-        #Liste déroulante pour sélection du type de graphe
-        html.Div(children=[
-        dcc.Dropdown(options=['pie','bar','line'],id='my-graph-btn',value='pie'),],style = {'margin-top' : '35px','width' : '350px'}),
+        dcc.RadioItems(options=['career_c','age','gender','race','field_cd'],id='my-radio-btn',value='career_c'),],style = {'margin-top' : '35px','margin-left' : '35px'}),
 
         #affichage du graphe après sélection des 3 paramètres 
         html.Br(),
         html.Div(dcc.Graph(id='graph')),
 
+        html.Div([
+            html.H3('Nuage de mots Train'),
+           html.Img(src=r"assets/Trainmots.png",alt="image",style ={ "text-align" : "center" }),
 
-        # html.Br(),
-        # html.Div(dcc.Graph(id='type_graph'))
+         ], style= {"width" : 550, "display" : "inline-block" , "margin"  : 5}),
 
-        # html.Div([
-        #     html.H3('Column 1'),
-        #     dcc.Graph(figure = scatter)
-            
-        # ], style= {"width" : 450, "display" : "inline-block" , "margin"  : 5}),
-
-        # html.Div([
-        #     html.H3('Column 2'),
-        #     dcc.Graph(figure = scatter)
-        # ],  style= {"width" : 450, "display" : "inline-block" , "margin"  : 5})
+         html.Div([
+             html.H3('Nuage de mots Submissions'),
+             html.Img(src=r"assets/Submots.png",alt="image",style ={"text-align" : "center" })
+         ],  style= {"width" : 550, "display" : "inline-block" , "margin"  : 5})
     ],
     id="active_dashboard"
     ),
@@ -316,10 +308,17 @@ content = dbc.Container(
         dbc.Table.from_dataframe(CountMatch, striped=True, bordered=True, hover=True),
         html.Br(),
 
-        plt.plot(d),
-        plt.legend(['No Match','Match']),
-        plt.title("Fréquence des sorties"),
-        plt.figsize(),
+        html.Div([
+            html.H3('Nuage de mots Train'),
+           html.Img(src=r"assets/FreqSortie.png",alt="image",style ={ "text-align" : "center" }),
+
+         ], style= {"width" : 500, "display" : "inline-block" , "margin"  : 5}),
+
+         html.Div([
+             html.H3('Nuage de mots Submissions'),
+             html.Img(src=r"assets/FreqDate.png",alt="image",style ={"text-align" : "center" })
+         ],  style= {"width" : 500, "display" : "inline-block" , "margin"  : 5})
+
     ],
     id="active_pred"
     )
@@ -369,6 +368,9 @@ def update_output(value,value2):
         if value =='age' :
             fig_pie = px.pie(Train.drop_duplicates('iid')['age_recode'].value_counts(), values='age_recode', names='age_recode',color_discrete_sequence=px.colors.sequential.RdBu)
             return fig_pie
+        if value == "career_c" : 
+            im = html.Img(src=r"assets/carriereTrain.png",alt="image",style ={"text-align" : "center" })
+            return im
         else :
             fig_pie = px.pie(Train.drop_duplicates('iid')[value].value_counts(), values=value, names=value,color_discrete_sequence=px.colors.sequential.RdBu)
             return fig_pie
@@ -381,6 +383,9 @@ def update_output(value,value2):
         if value =='age' :
             fig_pie = px.pie(df.drop_duplicates('iid')['age_recode'].value_counts(), values='age_recode', names='age_recode',color_discrete_sequence=px.colors.sequential.Viridis)
             return fig_pie
+        if value == "career_c" : 
+            im = html.Img(src=r"assets/FreqDate.png",alt="image",style ={"text-align" : "center" })
+            return im
         else :
             fig_pie = px.pie(df, values=value, names=value,color_discrete_sequence=px.colors.sequential.Viridis)
             return fig_pie

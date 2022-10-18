@@ -10,11 +10,13 @@ this feature you must install dash-bootstrap-components >= 0.11.0.
 For more details on building multi-page Dash applications, check out the Dash
 documentation: https://dash.plot.ly/urls
 """
+from curses import ACS_GEQUAL
 import dash
 import dash_bootstrap_components as dbc
-from dash import Input, Output, dcc, html, State
+from dash import Input, Output, dcc, html
 import pandas as pd
 import plotly.graph_objs as go
+import dash_table
 import io
 import base64
 import plotly.express as px
@@ -24,9 +26,6 @@ app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 urlSub= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/submissionsClean.csv?raw=true'
 df = pd.read_csv("C:/Users/samib/Documents/GitHub/ProjetM2Pythion/submissionsClean.csv",sep = ",",header=0)
 df["iid_pid"] = df["iid_pid"].astype(int)
-
-urlSub= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/DataClean.csv?raw=true'
-Train = pd.read_csv("C:/Users/samib/Documents/GitHub/ProjetM2Pythion/DataClean.csv",sep = ",",header=0)
 
 urlPred= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/prediction.csv?raw=true'
 pred = pd.read_csv("C:/Users/samib/Documents/GitHub/ProjetM2Pythion/prediction.csv",sep = ",",header=0)
@@ -43,9 +42,6 @@ def recode(age) :
 
 df['age_recode'] = df['age'].apply(recode)
 df_age = df.drop_duplicates('iid')['age_recode'].value_counts()
-
-Train['age_recode'] = Train['age'].apply(recode)
-Train_age = Train.drop_duplicates('iid')['age_recode'].value_counts()
 
 
 
@@ -266,15 +262,18 @@ content = dbc.Container(
 
          html.Div([
             html.Br(),
-            dcc.Dropdown(['Train', 'Submissions'], id='dropdown', value='Submissions'),
+            dcc.Dropdown(['Train', 'Submissions'], id='dropdown', value='Train'),
          ],
          style = {'width' : '350px'}
          ),
+        
+        html.Div(dcc.Graph(id='graph')),     
+        html.Div(dcc.Graph(id='graph2')),
 
         html.Div(children=[
-        dcc.RadioItems(options=['career_c','age','gender','race'],id='my-radio-btn',value='career_c'),],style = {'margin-left' : '350px'}),
-        html.Br(),
-        html.Div(dcc.Graph(id='graph'))
+        dcc.RadioItems(options=['career_c','age','gender','race'],id='my-radio-btn'),],style = {'margin-left' : '350px'}),
+
+        html.Div(dcc.Graph(id='graph')),
 
         # html.Div([
         #     html.H3('Column 1'),
@@ -333,62 +332,21 @@ def render_tab_content(active_tab):
 
 
 
-@app.callback(Output(component_id='graph', component_property='figure'), 
-    [Input(component_id='my-radio-btn',component_property='value'),Input(component_id='dropdown',component_property='value')])
+@app.callback([Output(component_id= "graph", component_property="figure"), Output(component_id= "graph2", component_property="figure")], [Input(component_id="dropdown",component_property="value")])
 
-def update_output(value,value2):
- 
-    if value2 == "Train":
-        if value=="gender" :
-            fig_pie= px.pie(Train.drop_duplicates('iid')['gender'].value_counts(),values='gender', names='gender') #,values='gender', names='gender'
-            #fig_pie = plt.pie(df.drop_duplicates('iid')['gender'].value_counts(), labels = ["26-35 ans","0-25 ans","plus de 35 ans"]) #,values='gender', names='gender'
-            return fig_pie
-        if value =='age' :
-            fig_pie = px.pie(Train.drop_duplicates('iid')['age_recode'].value_counts(), values='age_recode', names='age_recode')
-            return fig_pie
-        else :
-            fig_pie = px.pie(Train, values=value, names=value)
-            return fig_pie
-            
-    else :
-        if value=="gender" :
-            fig_pie= px.pie(df.drop_duplicates('iid')['gender'].value_counts(),values='gender', names='gender') #,values='gender', names='gender'
-            #fig_pie = plt.pie(df.drop_duplicates('iid')['gender'].value_counts(), labels = ["26-35 ans","0-25 ans","plus de 35 ans"]) #,values='gender', names='gender'
-            return fig_pie
-        if value =='age' :
-            fig_pie = px.pie(df.drop_duplicates('iid')['age_recode'].value_counts(), values='age_recode', names='age_recode')
-            return fig_pie
-        else :
-            fig_pie = px.pie(df, values=value, names=value)
-            return fig_pie
+def update_output(value):
 
+     if value =="Train" : 
 
+         fig = px.bar(df, x=df['gender'].astype(str), y=df['sports'])
+         fig2 = px.bar(df, x=df['gender'].astype(str), y=df['sports'])
+         return (fig,fig2)
 
-# @app.callback(
-
-#     Output(component_id='graph', component_property='figure'),
-#     Input(component_id='my-radio-btn',component_property='value')
-# )
-# def update_text(value) :#selected_text, selected_font_size
-#     #print(value)
-#     #fig_pie = px.pie(df, values=value, names=value)
-#     #return (fig_pie)
-#     #return(value)
-#     #print(selected_font_size)
-#     #if value == 'career':
-#         #dff = dff.groupby([ctg_value], as_index=False)[['detenues', 'under trial', 'convicts', 'others']].sum()
-#         #df=pd.read_csv(r'C:/Users/ibtis/OneDrive/Documents/GitHub/ProjetM2Pythion/submissionsClean.csv',sep=',')
-
-#     if value=="gender" :
-#         fig_pie= px.pie(df.drop_duplicates('iid')['gender'].value_counts(),values='gender', names='gender') #,values='gender', names='gender'
-#     #fig_pie = plt.pie(df.drop_duplicates('iid')['gender'].value_counts(), labels = ["26-35 ans","0-25 ans","plus de 35 ans"]) #,values='gender', names='gender'
-#         return fig_pie
-#     if value =='age' :
-#         fig_pie = px.pie(df.drop_duplicates('iid')['age_recode'].value_counts(), values='age_recode', names='age_recode')
-#         return fig_pie
-#     else :
-#         fig_pie = px.pie(df, values=value, names=value)
-#         return fig_pie
+     elif value =="Submissions" :
+        
+         fig = px.bar(df, x=df['gender'].astype(str), y=df['sports'])
+         fig2 = px.bar(df, x=df['gender'].astype(str), y=df['tv'])
+         return (fig,fig2)
 
 if __name__ == "__main__":
     app.run_server(debug = True)

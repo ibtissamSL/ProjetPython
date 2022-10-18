@@ -272,7 +272,7 @@ def update_text(value) :#selected_text, selected_font_size
         #df=pd.read_csv(r'C:/Users/ibtis/OneDrive/Documents/GitHub/ProjetM2Pythion/submissionsClean.csv',sep=',')
 
     if value=="gender" :
-        fig_pie= plt.pie(df.drop_duplicates('iid')['gender'].value_counts(),values='gender', names='gender') #,values='gender', names='gender'
+        fig_pie= px.pie(df.drop_duplicates('iid')['gender'].value_counts(),values='gender', names='gender') #,values='gender', names='gender'
     #fig_pie = plt.pie(df.drop_duplicates('iid')['gender'].value_counts(), labels = ["26-35 ans","0-25 ans","plus de 35 ans"]) #,values='gender', names='gender'
         return fig_pie
     if value =='age' :
