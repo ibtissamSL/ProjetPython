@@ -1,0 +1,35 @@
+import pandas as pd
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+
+def Act(df):
+    #Les activités les plus populaires - Submissions
+    Activites=df.iloc[:,35:53]
+    Activites["iid"] = df["iid"]
+    Activites.drop_duplicates("iid").groupby(["sports",	"tvsports",	"exercise",	"dining",	"museums",	"art"	,"hiking","gaming"	,"clubbing","reading",	"tv",	"theater"	,"movies",	"concerts",	"music",	"shopping",	"yoga"	]).mean()
+    Activites = Activites.drop('career_c',axis=1)
+
+    liste=[]
+    for i in Activites:
+        Moy=round(Activites.drop_duplicates("iid")[i].mean(),2)
+        liste.append(Moy)
+    liste= liste[:-1]
+    MoyAct = pd.DataFrame(liste)
+    Activites =Activites.loc[:,Activites.columns!="iid"]
+    MoyAct.index = Activites.columns
+    MoyAct.columns = ["Moy"]
+    MoyAct.sort_values(by ="Moy", ascending =False)
+
+    MoyAct = pd.DataFrame(MoyAct)
+    
+    return (MoyAct)
+
+def Nuagemot(df):
+    
+    cloud_generator = WordCloud(background_color='white',
+                            random_state=1)
+
+    wordcloud_image = cloud_generator.fit_words(df.Moy)
+    plt.imshow(wordcloud_image, interpolation="bilinear")
+    plt.axis("off")
+    plt.savefig("C:/Users/sibghi/Documents/GitHub/ProjetM2Pythion/ActiviteBoxplot_points.png") #enregistrement de l'image
