@@ -6,7 +6,7 @@
 
 EasyDate un site de rencontre ayant pour principal objectif d'organiser des soirées "speed-dating". L'entreprise cherche donc à maximiser la compatibilité entre les personnes pour percevoir le plus de matchs possible entre deux personnes.
 
-**Présentation projet Speed Dating**
+**Présentation de notre projet Speed Dating**
 
 L'objectif du projet est de réfléchir à un modèle prédictif performant permettant la meilleure prédiction possible entre deux personnes selons les différents descripteurs fournit par le dataset.
 
