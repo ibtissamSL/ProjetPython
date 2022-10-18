@@ -1,5 +1,5 @@
-# Projet Speed Dating 
-Présentation du projet
+## Projet Speed Dating 
+#Présentation du projet
 
 Dans le cadre du cours de programmation python, nous devions réaliser un projet de groupe visant à consolider nos connaissances et coméptences en réalisant un modèle prédictif le plus performant ainsi qu'une application Dash pour la visualisation. 
 
