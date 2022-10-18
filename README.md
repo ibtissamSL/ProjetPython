@@ -29,7 +29,8 @@ Nous avons utilisé heroku pour le déploiement et l'hébergement de notre appli
 #### *Dans le répertoire Datasets :* 
 * Train.csv (fichier train d'origine)
 * Submissions.csv (fichier submissions d'origine)
-* CleanDataSET.py (fichier train & Submissions nettoyés)
+* DataClean.csv (fichier train nettoyé)
+* submissionsClean.csv (fichier submissions nettoyé)
 * Prediction.csv (fichier correspondant à notre prédiction des matchs selon notre modèle prédictif)
 
 #### *Dans les fichiers restants :* 
