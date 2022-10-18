@@ -27,8 +27,8 @@ Nous avons utilisé heroku pour le déploiement et l'hébergement de notre appli
 # Organisation du repository 
 
 #### *Dans le répertoire Datasets* 
-Dataclean.csv (fichier train nettoyé)
-. submissionsClean (fichier submissions nettoyé)
+*Dataclean.csv (fichier train nettoyé)
+*submissionsClean (fichier submissions nettoyé)
 
 
 fichiers python pour description dataset (sub et train) 
