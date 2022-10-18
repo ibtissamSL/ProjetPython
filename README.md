@@ -15,6 +15,8 @@ Le projet a été réalisé grâce à des statistiques descriptives ainsi que du
   - Kaggle
 
 Le projet intitulé "Speed Dating" est composé d'un script contenant le code de l'analyse complète. Les résultats ont été présentés lors d'une soutenance évaluée par un examinateur.
+** déploiement de l'application**
+Pour déployer notre application nous avons utilisé heroku, qui héberge notre application gratuitement. En paramétrant l'application, nous choisissons qu'elle nous lise du python. On s'assure qu'elle fasse tourner la bonne version de python, ici la 3.9. Une fois paramétré correctement, on déploie manuellement notre explication avec Heroku, qui génère un lien avec notre application hébergée!
 ***
 # Organisation du repository 
 
