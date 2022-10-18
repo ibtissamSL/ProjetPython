@@ -21,19 +21,21 @@ import dash_table
 import io
 import base64
 import plotly.express as px
+import matplotlib.pyplot as plt
 
-app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+app = dash.Dash(external_stylesheets=[dbc.themes.MATERIA])
 server = app.server
 
 #urlSub= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/submissionsClean.csv?raw=true'
-df = pd.read_csv(r"C:/Users/ibtis/OneDrive/Documents/GitHub/ProjetM2Pythion/submissionsClean.csv",sep = ",",header=0)
+df = pd.read_csv(r"C:/Users/sibghi/Documents/GitHub/ProjetM2Pythion/submissionsClean.csv",sep = ",",header=0)
 df["iid_pid"] = df["iid_pid"].astype(int)
 
 #urlSub= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/DataClean.csv?raw=true'
-Train = pd.read_csv(r"C:/Users/ibtis/OneDrive/Documents/GitHub/ProjetM2Pythion/DataClean.csv",sep = ",",header=0)
+Train = pd.read_csv(r"C:/Users/sibghi/Documents/GitHub/ProjetM2Pythion/DataClean.csv",sep = ",",header=0)
 
 #urlPred= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/prediction.csv?raw=true'
-pred = pd.read_csv(r"C:/Users/ibtis/OneDrive/Documents/GitHub/ProjetM2Pythion/prediction.csv",sep = ",",header=0)
+pred = pd.read_csv(r"C:/Users/sibghi/Documents/GitHub/ProjetM2Pythion/prediction.csv",sep = ",",header=0)
 
 df = pred.merge(df, on="iid_pid", how = 'left')
 
@@ -216,11 +218,12 @@ tab = html.Div(
             ],
             id = "onglet", active_tab="Acceuil"
         ),
-    ], style = {"color": "white","background-color" : "Teal","font-size" : 20}
+    ], style = {"color": "black"}
 )
 
+d= pd.crosstab(df.go_out,df.target)
 scatter = go.Figure(
-        data=[go.Scatter(x=df.income, y=df.sports, mode="markers")]
+        data=[go.Scatter(d, mode="markers")]
         )
 
 CountMatch = pd.DataFrame(pred["target"].value_counts())
@@ -307,12 +310,16 @@ content = dbc.Container(
     ),
     html.Div([
         html.Br(),
+
         html.Br(),
         html.H4("Répartition des matchs prédis : "),
         dbc.Table.from_dataframe(CountMatch, striped=True, bordered=True, hover=True),
         html.Br(),
-        html.H4("Tableau avec tous les individus : "),
-        dbc.Table.from_dataframe(pred, striped=True, bordered=True, hover=True)
+
+        plt.plot(d),
+        plt.legend(['No Match','Match']),
+        plt.title("Fréquence des sorties"),
+        plt.figsize(),
     ],
     id="active_pred"
     )
