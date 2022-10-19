@@ -142,3 +142,6 @@ def EtSub(df) :
     ethnie = ethnie.sort_values(ascending = False)
 
     return ethnie
+
+
+    

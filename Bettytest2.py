@@ -24,18 +24,45 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 from Activite import ActSub,ActTrain,Nuagemot , FreqDate, FreqSortie,carSub,carTrain,filedSub,filedTrain,EtSub,EtTrain
 
+age = ["26-35 ans","0-25 ans","plus de 35 ans"]
+genre = ["Femme", "Homme"]
 app = dash.Dash(external_stylesheets=[dbc.themes.MATERIA])
 server = app.server
 
-#urlSub= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/submissionsClean.csv?raw=true'
-df = pd.read_csv(r"C:/Users/samib/Documents/GitHub/ProjetM2Pythion/submissionsClean.csv",sep = ",",header=0)
+urlSub= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/submissionsClean.csv?raw=true'
+df = pd.read_csv(urlSub,sep = ",",header=0)
 df["iid_pid"] = df["iid_pid"].astype(int)
 
-#urlSub= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/DataClean.csv?raw=true'
-Train = pd.read_csv(r"C:/Users/samib/Documents/GitHub/ProjetM2Pythion/DataClean.csv",sep = ",",header=0)
+url= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/DataClean.csv?raw=true'
+Train = pd.read_csv(url,sep = ",",header=0)
 
-#urlPred= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/prediction.csv?raw=true'
-pred = pd.read_csv(r"C:/Users/samib/Documents/GitHub/ProjetM2Pythion/prediction.csv",sep = ",",header=0)
+urlPred= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/prediction.csv?raw=true'
+pred = pd.read_csv(urlPred,sep = ",",header=0)
+
+urlPred= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/prediction.csv?raw=true'
+pred = pd.read_csv(urlPred,sep = ",",header=0)
+
+urlXsub = "https://github.com/Samibgh/ProjetM2Pythion/blob/main/submissions.csv"
+XSub = pd.read_csv(urlXsub, sep=";")
+
+
+dfinal = XSub.merge(pred, on="iid_pid", how = 'inner')
+
+dfinal = dfinal[['iid_pid','iid','pid','target']]
+
+list_of_single_column = list(dfinal['iid'])
+mylist = list(dict.fromkeys(list_of_single_column))
+
+# #define a function that will return the pid who matched (where target =='1')
+# dfinal.loc[dfinal['target'] == 1]
+# #les rencontres qui ont fini par un match
+
+# dfinal.loc[dfinal['target'] == 1][['iid_pid']]
+# #si on insère l'iid, 
+# dfinal.loc[dfinal['target'] == 1].loc[dfinal['iid'] == 491][['pid']]
+
+
+
 
 df = pred.merge(df, on="iid_pid", how = 'left')
 
@@ -279,7 +306,7 @@ content = dbc.Container(
         #Liste déroulante pour sélection du fichier Train ou Submission
          html.Div([
             html.Br(),
-            dcc.Dropdown(['Train', 'Submissions'], id='dropdown', value='TRain'),
+            dcc.Dropdown(['Train', 'Submissions'], id='dropdown', value='Train'),
          ],
          style = {'width' : '350px'}
          ),
@@ -321,7 +348,18 @@ content = dbc.Container(
 
          html.Div([
              html.Img(src=r"assets/FreqDate.png",alt="image",style ={"text-align" : "center" ," margin-right" : 40})
-         ],  style= {"width" : 600, "display" : "inline-block" , "margin"  : 5})
+         ],  style= {"width" : 600, "display" : "inline-block" , "margin"  : 5}),
+
+        #liste déroulante pour les identifiants
+        html.Div([
+            html.Br(),
+            html.H4("Vérification des matchs selon l'id de la personne : "),
+            dcc.Dropdown(options=mylist, id='dropdown_iid', value=537),
+        ],
+        style = {'width' : '350px'}
+        ),
+
+        html.Div([], id = 'tableau'),
 
     ],
     id="active_pred"
@@ -424,7 +462,13 @@ def update_output(value,value2):
             fig_pie = px.pie(df, values=value, names=value,color_discrete_sequence=px.colors.sequential.Viridis)
             return fig_pie
 
+#callback et fontion pour afficher les match d'un iid
+@app.callback(Output(component_id='tableau', component_property='children'), 
+    [Input(component_id='dropdown_iid',component_property='value')
+    ])
 
-
+def update_output(value):
+    d = pd.DataFrame(dfinal.loc[dfinal['target'] == 1].loc[dfinal['iid'] == value][['pid']])
+    return dbc.Table.from_dataframe(d, striped=True, bordered=True, hover=True,id="tableau")
 if __name__ == "__main__":
     app.run_server(debug = True)
