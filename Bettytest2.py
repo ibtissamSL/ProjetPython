@@ -12,6 +12,7 @@ this feature you must install dash-bootstrap-components >= 0.11.0.
 For more details on building multi-page Dash applications, check out the Dash
 documentation: https://dash.plot.ly/urls
 """
+from dataclasses import field
 import dash
 import dash_bootstrap_components as dbc
 from dash import Input, Output, dcc, html, State
@@ -21,7 +22,7 @@ import io
 import base64
 import plotly.express as px
 import matplotlib.pyplot as plt
-from Activite import ActSub,ActTrain,Nuagemot , FreqDate, FreqSortie,carSub,carTrain
+from Activite import ActSub,ActTrain,Nuagemot , FreqDate, FreqSortie,carSub,carTrain,filedSub,filedTrain,EtSub,EtTrain
 
 app = dash.Dash(external_stylesheets=[dbc.themes.MATERIA])
 server = app.server
@@ -208,8 +209,12 @@ ActT = ActTrain(Train)
 Nuagemot(ActT,ActS, 'tab20b','tab20b' )
 FreqSortie(df)
 FreqDate(df)
-carTrain(Train)
-carSub(df)
+carriereTrain = carTrain(Train)
+carriereSub = carSub(df)
+fiTrain = filedTrain(Train)
+filSUb = filedSub(df)
+etnTrain = EtTrain(Train)
+etnSub = EtSub(df)
 
 tab = html.Div(
     [
@@ -274,7 +279,7 @@ content = dbc.Container(
         #Liste déroulante pour sélection du fichier Train ou Submission
          html.Div([
             html.Br(),
-            dcc.Dropdown(['Train', 'Submissions'], id='dropdown', value='Submissions'),
+            dcc.Dropdown(['Train', 'Submissions'], id='dropdown', value='TRain'),
          ],
          style = {'width' : '350px'}
          ),
@@ -286,17 +291,18 @@ content = dbc.Container(
         #affichage du graphe après sélection des 3 paramètres 
         html.Br(),
         html.Div(dcc.Graph(id='graph')),
-
+        html.Br(),
+        html.Br(),
         html.Div([
             html.H3('Nuage de mots Train'),
-           html.Img(src=r"assets/Trainmots.png",alt="image",style ={ "text-align" : "center" }),
+           html.Img(src=r"assets/Trainmots.png",alt="image",style = {'margin-left':30}),
 
-         ], style= {"width" : 550, "display" : "inline-block" , "margin"  : 5}),
+         ], style= {"width" : 600, "display" : "inline-block" }),
 
          html.Div([
              html.H3('Nuage de mots Submissions'),
-             html.Img(src=r"assets/Submots.png",alt="image",style ={"text-align" : "center" })
-         ],  style= {"width" : 550, "display" : "inline-block" , "margin"  : 5})
+             html.Img(src=r"assets/Submots.png",alt="image",style = {'margin-right':30})
+         ],  style= {"width" : 600, "display" : "inline-block" })
     ],
     id="active_dashboard"
     ),
@@ -309,15 +315,13 @@ content = dbc.Container(
         html.Br(),
 
         html.Div([
-            html.H3('Nuage de mots Train'),
-           html.Img(src=r"assets/FreqSortie.png",alt="image",style ={ "text-align" : "center" }),
+           html.Img(src=r"assets/FreqSortie.png",alt="image",style ={ "text-align" : "center", 'margin-left':30}),
 
-         ], style= {"width" : 500, "display" : "inline-block" , "margin"  : 5}),
+         ], style= {"width" : 600, "display" : "inline-block" , "margin"  : 5}),
 
          html.Div([
-             html.H3('Nuage de mots Submissions'),
-             html.Img(src=r"assets/FreqDate.png",alt="image",style ={"text-align" : "center" })
-         ],  style= {"width" : 500, "display" : "inline-block" , "margin"  : 5})
+             html.Img(src=r"assets/FreqDate.png",alt="image",style ={"text-align" : "center" ," margin-right" : 40})
+         ],  style= {"width" : 600, "display" : "inline-block" , "margin"  : 5})
 
     ],
     id="active_pred"
@@ -355,7 +359,7 @@ def render_tab_content(active_tab):
 
 
 
-@app.callback(Output(component_id='graph', component_property='figure'), 
+@app.callback(Output(component_id='graph', component_property='figure'),
     [Input(component_id='my-radio-btn',component_property='value'),Input(component_id='dropdown',component_property='value')])
 
 def update_output(value,value2):
@@ -369,8 +373,23 @@ def update_output(value,value2):
             fig_pie = px.pie(Train.drop_duplicates('iid')['age_recode'].value_counts(), values='age_recode', names='age_recode',color_discrete_sequence=px.colors.sequential.RdBu)
             return fig_pie
         if value == "career_c" : 
-            im = html.Img(src=r"assets/carriereTrain.png",alt="image",style ={"text-align" : "center" })
-            return im
+             #html.Img(src=r"assets/carriereTrain.png",alt="image",style ={"text-align" : "center" })
+             #data = [go.Bar( x = list(carriereTrain.index),y = list(carriereTrain.values))]
+             fig_pie={'data': [ {'x': list(carriereTrain.index), 'y': list(carriereTrain.values), 'type': 'bar'},],'layout': {
+            'title': 'Répartition des carrières'
+        }}
+             return fig_pie
+        if value == 'field_cd':
+            fig_pie={'data': [ {'x': list(fiTrain.index), 'y': list(fiTrain.values), 'type': 'bar'},],'layout': {
+            'title': 'Répartition des dommaines de profession'
+        }}
+            return fig_pie
+        if value == 'race':
+            fig_pie={'data': [ {'x': list(etnTrain.index), 'y': list(etnTrain.values), 'type': 'bar'},],'layout': {
+            'title': 'Répartition des éthnies'
+        }}
+            return fig_pie
+  
         else :
             fig_pie = px.pie(Train.drop_duplicates('iid')[value].value_counts(), values=value, names=value,color_discrete_sequence=px.colors.sequential.RdBu)
             return fig_pie
@@ -384,8 +403,23 @@ def update_output(value,value2):
             fig_pie = px.pie(df.drop_duplicates('iid')['age_recode'].value_counts(), values='age_recode', names='age_recode',color_discrete_sequence=px.colors.sequential.Viridis)
             return fig_pie
         if value == "career_c" : 
-            im = html.Img(src=r"assets/FreqDate.png",alt="image",style ={"text-align" : "center" })
-            return im
+             #html.Img(src=r"assets/carriereTrain.png",alt="image",style ={"text-align" : "center" })
+             #data = [go.Bar( x = list(carriereTrain.index),y = list(carriereTrain.values))]
+             fig_pie={'data': [ {'x': list(carriereSub.index), 'y': list(carriereSub.values), 'type': 'bar'},],'layout': {
+            'title': 'Répartition des carrières'
+        }}
+             return fig_pie
+        if value == 'field_cd':
+            fig_pie={'data': [ {'x': list(filSUb.index), 'y': list(filSUb.values), 'type': 'bar'},],'layout': {
+            'title': 'Répartition des domaines de profession'
+        }}
+            return fig_pie
+        if value == 'race':
+            fig_pie={'data': [ {'x': list(etnSub.index), 'y': list(etnSub.values), 'type': 'bar'},],'layout': {
+            'title': 'Répartition des éthnies'
+        }}
+            return fig_pie
+            
         else :
             fig_pie = px.pie(df, values=value, names=value,color_discrete_sequence=px.colors.sequential.Viridis)
             return fig_pie

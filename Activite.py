@@ -93,12 +93,7 @@ def carSub(df):
     carriere.index = ["Lawyer" ,"Academic/Research", "Psychologist" ,"Doctor/Medicine", "Engineer", "CreativeArts/Entertainment", "Banking/Consulting/Finance/Marketing/Business/CEO/Entrepreneur/" ,"International/HumanitarianAffairs", "Undecided" ,"SocialWork","Politics","Other","Journalism"]
     carriere.columns = ["carriere", "count"]
     carriere = carriere.sort_values(ascending = False)
-
-    fig = plt.figure()
-    ax = fig.add_axes([0,0,5,2])
-    ax.bar(list(carriere.index) ,list(carriere.values))
-    plt.savefig("assets/carSub.png") #enregistrement de l'image
-    plt.clf()
+    return carriere
 
 def carTrain(df):
     df["career_c"] = df.career_c.astype(int)
@@ -107,9 +102,43 @@ def carTrain(df):
     carriere.index =["Lawyer" ,"Academic/Research", "Psychologist" ,"Doctor/Medicine", "Engineer", "Creative/Arts/Entertainment", "Banking/Consulting/Finance/Marketing/Business/CEO/Entrepreneur/" ,"Admin Real Estate" ,"International/HumanitarianAffairs", "Undecided" ,"SocialWork","SpeechPathology","Politics","Prosports/Athletics","Other","Architecture"]
     carriere.columns = ["carriere", "count"]
     carriere = carriere.sort_values(ascending = False)
+    return carriere
 
-    fig = plt.figure()
-    ax = fig.add_axes([0,0,5,2])
-    ax.bar(list(carriere.index) ,list(carriere.values))
-    plt.savefig("carriereTrain.png") #enregistrement de l'image
-    plt.clf()
+
+def filedTrain(df):
+    df["field_cd"] = df.field_cd.astype(int)
+    filed = pd.DataFrame(df.field_cd)
+    filed = filed.value_counts().sort_index()
+    filed.index =["Law" , "Math Social Science", "Psychologist" ,"Medical Science, Pharmaceuticals, and Bio Tech" ,"Engineering",  "English/Creative Writing/ Journalism","History/Religion/Philosophy", "Business/Econ/Finance ","Education, Academia ","Biological Sciences/Chemistry/Physics","Social Work","Undergrad/undecided", "Political Science/International Affairs", "Film","Fine Arts/Arts Administration","Languages","Architecture"]
+    filed.columns = ["Domaine profession", "count"]
+    filed = filed.sort_values(ascending = False)
+
+    return filed
+
+def filedSub(df): 
+    filed = pd.DataFrame(df.field_cd)
+    filed = filed.value_counts().sort_index()
+    filed.index = ["Law" , "Math Social Science", "Psychologist" ,"Medical Science, Pharmaceuticals, and Bio Tech" ,"Engineering",  "English/Creative Writing/ Journalism","History/Religion/Philosophy", "Business/Econ/Finance ","Education, Academia ","Biological Sciences/Chemistry/Physics","Social Work", "Film","Fine Arts/Arts Administration","Languages","Architecture"]
+    filed.columns = ["Domaine profession", "count"]
+    filed = filed.sort_values(ascending = False)  
+
+    return filed
+
+def EtTrain(df): 
+    df["race"] = df.race.astype(int)
+    ethnie = pd.DataFrame(df.race)
+    ethnie = ethnie.value_counts().sort_index()
+    ethnie.index = ["Black/African American" ,"European/Caucasian-American", "Latino/Hispanic American", "Asian/Pacific Islander/Asian-American","Native American","Other"]
+    ethnie.columns = ["ethnie", "count"]
+    ethnie = ethnie.sort_values(ascending = False)
+
+    return ethnie
+
+def EtSub(df) :
+    ethnie = pd.DataFrame(df.race)
+    ethnie = ethnie.value_counts().sort_index()
+    ethnie.index = ["Black/African American" ,"European/Caucasian-American", "Latino/Hispanic American", "Asian/Pacific Islander/Asian-American","Other"]
+    ethnie.columns = ["ethnie", "count"]
+    ethnie = ethnie.sort_values(ascending = False)
+
+    return ethnie
