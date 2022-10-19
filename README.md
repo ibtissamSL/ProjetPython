@@ -17,6 +17,7 @@ Le projet a été réalisé grâce à des statistiques descriptives ainsi que du
   - Google Colab
   - Librairies Python : Pandas, Numpy, Matplotlib, Seaborn, Statsmodels, Scipy, Sklearn, Dash, dash_bootstrap_components, wordcloud, 
   - Visual Studio Code
+  - GitHub Desktop
 
 Le projet intitulé "Speed Dating" est une application composé d'un script principal. Les résultats ont été présentés lors d'une soutenance évaluée par notre professeur.
 
