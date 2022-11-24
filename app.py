@@ -29,11 +29,13 @@ genre = ["Femme", "Homme"]
 app = dash.Dash(external_stylesheets=[dbc.themes.MATERIA])
 server = app.server
 
-urlSub= r'C:/Users/samib/Documents/GitHub/ProjetM2Pythion/datasets/submissionsClean.csv'
+#urlSub= r'C:/Users/samib/Documents/GitHub/ProjetM2Pythion/datasets/submissionsClean.csv'
+urlSub= r'https://github.com/ibtissamSL/ProjetPython/blob/main/datasets/submissionsClean.csv'
 df = pd.read_csv(urlSub,sep = ",",header=0)
 df["iid_pid"] = df["iid_pid"].astype(int)
 
-#url= 'C:\Users\samib\Documents\GitHub\ProjetM2Pythion\datasets\DataClean.csv.py?raw=true'
+url= 'C:\Users\samib\Documents\GitHub\ProjetM2Pythion\datasets\DataClean.csv.py?raw=true'
+#url= 'https://raw.githubusercontent.com/ibtissamSL/ProjetPython/main/datasets/DataClean.csv'
 Train = pd.read_csv(r'C:/Users/samib/Documents/GitHub/ProjetM2Pythion/datasets/DataClean.csv',sep = ",",header=0)
 
 urlPred= 'https://github.com/Samibgh/ProjetM2Pythion/blob/main/prediction.csv?raw=true'
